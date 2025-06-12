@@ -12,3 +12,12 @@ config: {'_wandb': {}}
 2025-06-12 11:44:44,742 INFO    MainThread:2332613 [wandb_init.py:init():875] sending inform_init request
 2025-06-12 11:44:44,747 INFO    MainThread:2332613 [wandb_init.py:init():883] backend started and connected
 2025-06-12 11:44:44,749 INFO    MainThread:2332613 [wandb_init.py:init():956] updated telemetry
+2025-06-12 11:44:44,766 INFO    MainThread:2332613 [wandb_init.py:init():980] communicating run to backend with 90.0 second timeout
+2025-06-12 11:44:45,408 INFO    MainThread:2332613 [wandb_init.py:init():1032] starting run threads in backend
+2025-06-12 11:44:45,528 INFO    MainThread:2332613 [wandb_run.py:_console_start():2453] atexit reg
+2025-06-12 11:44:45,528 INFO    MainThread:2332613 [wandb_run.py:_redirect():2301] redirect: wrap_raw
+2025-06-12 11:44:45,528 INFO    MainThread:2332613 [wandb_run.py:_redirect():2370] Wrapping output streams.
+2025-06-12 11:44:45,528 INFO    MainThread:2332613 [wandb_run.py:_redirect():2393] Redirects installed.
+2025-06-12 11:44:45,531 INFO    MainThread:2332613 [wandb_init.py:init():1078] run started, returning control to user process
+2025-06-12 11:44:45,531 INFO    MainThread:2332613 [wandb_watch.py:_watch():70] Watching
+2025-06-12 11:44:47,749 INFO    MsgRouterThr:2332613 [mailbox.py:close():129] [no run ID] Closing mailbox, abandoning 1 handles.
