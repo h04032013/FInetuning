@@ -1,0 +1,12 @@
+Loading dataset...
+Resolving data files: 100%|██████████| 114/114 [00:00<00:00, 397.87it/s]
+Traceback (most recent call last):
+  File "/n/netscratch/dam_lab/Lab/hdiaz/ft_project/finetune.py", line 30, in <module>
+    dataset_dict = load_dataset(
+                   ^^^^^^^^^^^^^
+  File "/n/netscratch/dam_lab/Lab/hdiaz/.conda/envs/env3/lib/python3.12/site-packages/datasets/load.py", line 2129, in load_dataset
+    return builder_instance.as_streaming_dataset(split=split)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/netscratch/dam_lab/Lab/hdiaz/.conda/envs/env3/lib/python3.12/site-packages/datasets/builder.py", line 1318, in as_streaming_dataset
+    raise NotImplementedError(
+NotImplementedError: Loading a streaming dataset cached in a LocalFileSystem is not supported yet.

@@ -1,0 +1,20 @@
+Loading dataset...
+Downloading readme: 100%|██████████| 4.80k/4.80k [00:00<00:00, 28.7MB/s]
+Resolving data files: 100%|██████████| 114/114 [00:00<00:00, 1349.25it/s]
+Traceback (most recent call last):
+  File "/n/netscratch/dam_lab/Lab/hdiaz/ft_project/finetune.py", line 31, in <module>
+    dataset_dict = load_dataset(
+                   ^^^^^^^^^^^^^
+  File "/n/netscratch/dam_lab/Lab/hdiaz/.conda/envs/env3/lib/python3.12/site-packages/datasets/load.py", line 2112, in load_dataset
+    builder_instance = load_dataset_builder(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/n/netscratch/dam_lab/Lab/hdiaz/.conda/envs/env3/lib/python3.12/site-packages/datasets/load.py", line 1835, in load_dataset_builder
+    builder_instance: DatasetBuilder = builder_cls(
+                                       ^^^^^^^^^^^^
+  File "/n/netscratch/dam_lab/Lab/hdiaz/.conda/envs/env3/lib/python3.12/site-packages/datasets/builder.py", line 373, in __init__
+    self.config, self.config_id = self._create_builder_config(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/netscratch/dam_lab/Lab/hdiaz/.conda/envs/env3/lib/python3.12/site-packages/datasets/builder.py", line 552, in _create_builder_config
+    builder_config = self.BUILDER_CONFIG_CLASS(**config_kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: ParquetConfig.__init__() got an unexpected keyword argument 'trust_remote_code'

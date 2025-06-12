@@ -1,63 +1,74 @@
 import torch
+import os
 from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments, DataCollatorWithPadding, DataCollatorForLanguageModeling
-from datasets import load_dataset
+from datasets import load_dataset, Dataset, concatenate_datasets
 import tqdm
-import os 
 import wandb
+from itertools import islice
 
 print("Imports done")
 model_name = "microsoft/Phi-4-mini-instruct"
 cache_str = "/n/netscratch/dam_lab/Lab/hdiaz/hgf_hub"
 ft_cache = "/n/netscratch/dam_lab/Lab/hdiaz/ft_project/hgf_new_hub"
+
+# Create cache directories if they don't exist
+os.makedirs(cache_str, exist_ok=True)
+os.makedirs(ft_cache, exist_ok=True)
+
 model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, cache_dir=cache_str)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
-
 #print("Attributes done, to device done")
 
 #print("Initializing wandb")
-wandb.init(entity= "hdiaz-harvard-university", project="training-opwmth")
+wandb.init(entity="hdiaz-harvard-university", project="training-opwmth")
 wandb.watch(model)  
 
 #print("now loading dataset")
-dataset_dict = load_dataset("open-web-math/open-web-math", cache_dir=cache_str)
+print("Loading dataset...")
+# Load dataset in chunks to avoid memory issues
+dataset = load_dataset(
+    "open-web-math/open-web-math",
+    split="train",
+    cache_dir=cache_str
+)
 
+# Take a smaller subset for testing
+subset_size = int(0.05 * len(dataset))  # 5% of the data
+dataset = dataset.shuffle(seed=42).select(range(subset_size))
 
-full_dataset = dataset_dict["train"]
-
-#print("starting to slice")
-# only using 5% for prototyping code
-subset_size = int(0.05 * len(full_dataset))
-subset = full_dataset.shuffle(seed=42).select(range(subset_size))
-
-#print("splitting train set from subset")
-split = subset.train_test_split(test_size=0.2, seed=42)
-
-train_dataset = split["train"]
-test_dataset = split["test"]
+# Split into train and test
+train_test_split = dataset.train_test_split(test_size=0.2, seed=42)
+train_dataset = train_test_split["train"]
+test_dataset = train_test_split["test"]
 
 # Check results
-print(f"Subset size: {len(subset)}")
+print(f"Full dataset size: {len(dataset)}")
 print(f"Train size: {len(train_dataset)}")
 print(f"Test size: {len(test_dataset)}")
 
-
-
 tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=cache_str)
-
 tokenizer.pad_token = tokenizer.eos_token
 data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 
 def tokenize_function(examples):
-#calll that pre-trained tokenizer
     return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=512)
 
-tokenized_train_data = train_dataset.map(tokenize_function, batched=True)
-tokenized_test_data = test_dataset.map(tokenize_function, batched=True)
+print("Tokenizing datasets...")
+tokenized_train_data = train_dataset.map(
+    tokenize_function,
+    batched=True,
+    num_proc=4,
+    remove_columns=train_dataset.column_names
+)
 
-#tokenized_train_data = tokenized_train_data.select_columns(["text"])
-#tokenized_test_data = tokenized_test_data.select_columns(["text"])
+tokenized_test_data = test_dataset.map(
+    tokenize_function,
+    batched=True,
+    num_proc=4,
+    remove_columns=test_dataset.column_names
+)
 
 tokenized_train_data.set_format("torch")
 tokenized_test_data.set_format("torch")
@@ -84,15 +95,14 @@ class GradientSavingTrainer(Trainer):
                     torch.save(param.grad.clone().cpu(), f"{save_path}/{name.replace('.', '_')}_grad.pt")
                     if wandb.run is not None:
                         wandb.log({f"gradients/{name}": wandb.Histogram(param.grad.cpu().data.numpy())},
-                                  step=self.state.global_step)
-
+                                step=self.state.global_step)
 
         return loss
-    
+
 training_args = TrainingArguments(
     output_dir=cache_str,
     eval_strategy="epoch",
-    learning_rate = 2e-5,
+    learning_rate=2e-5,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     num_train_epochs=2,
@@ -103,20 +113,22 @@ training_args = TrainingArguments(
     logging_steps=100,
     push_to_hub=False,
     report_to="wandb",
-    run_name="ft-opwmth"
-    )
+    run_name="ft-opwmth",
+    fp16=True,  # Enable mixed precision training
+    gradient_accumulation_steps=4  # Accumulate gradients to reduce memory usage
+)
 
 trainer = GradientSavingTrainer(
     model=model,
     args=training_args,
     train_dataset=tokenized_train_data,
     eval_dataset=tokenized_test_data,
-    tokenizer = tokenizer,
-    data_collator = data_collator
-
+    tokenizer=tokenizer,
+    data_collator=data_collator
 )
 
 #training
+print("Starting training...")
 trainer.train()
 trainer.save_model(output_dir=ft_cache)
 
