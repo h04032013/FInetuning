@@ -1,0 +1,10 @@
+MATH
+MATH_train.json
+MATH_test.json
+figures
+openai_key
+train_error.err 
+train_job.sh
+train_output.out 
+__pycache__
+hgf_new_hub

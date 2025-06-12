@@ -1,0 +1,77 @@
+API - 5-1 (prompt only fed two answers, "are they mathematically equivalent") - 4.1-nano
+Total correct: 2750 / 4754
+Accuracy: 57.85%
+
+API -5-2 (Given the question: {problem}
+        Compare the following two math answers. Only respond "TRUE" if both answers are mathematically equivalent, otherwise return "FALSE") - 4.1-nano
+Total correct: 2771 / 4754
+Accuracy: 58.29%
+
+=================================================================================================================
+API - 5-2-3 (Given the question: {problem}
+        Compare the following two math answers. Only respond "TRUE" if both answers are correct, otherwise return "FALSE") - 4o-mini
+Total correct: 2368 / 4754
+Accuracy: 49.81%
+
+API - 5-2-4 ("Compare the following two answers to a math question. Only respond "TRUE" if both answers are equivalent, otherwise return "FALSE") - 4o-mini - 13541458
+Total correct: 2730 / 4754
+Accuracy: 57.43%
+
+API - 5/2 (Given the math problem:  {problem} Compare the following two answers. Only respond "TRUE" if both answers are equivalent and correct, otherwise return "FALSE") - 4o-mini
+55%
+
+=================================================================================================================================
+API - 5/5 (""Given the question: {problem}
+        Compare the following two math answers. Only respond "TRUE" if both answers are mathematically equivalent, otherwise return "FALSE"
+        Answer 1: {final_answer}
+        Answer 2: {correct_answer}) - 4.1 mini
+        (""First, break down this problem for grade school students. Then, clearly state the final numerical answer in a latex boxed environment which will be scored. \n\nProblem: {}\n")")
+Total correct: 2789 / 4754
+Accuracy: 58.67%
+        
+
+is_equiv (hendrycks eval) - "First, break down this problem for grade school students. Then, clearly state the final numerical answer in a latex boxed environment which will be scored. \n\nProblem: {}\n")"
+Total correct: 2670 / 4754
+Accuracy: 56.16%
+
+---------------------------------------------------------------------------
+is_equiv 5_8 - "(<|system|>You are providing insightful explanations to grade school students<|end|><|user|>First, break down this problem for grade school students. Then, clearly state the final numerical answer in a latex boxed environment which will be scored<|end|><|user|>{}<|end|><|assistant|><|end|><|assistant|>)"
+
+Total correct: 2931 / 4754
+Accuracy: 61.65%
+
+api_quiv 5_8 =  ("Given the question: {problem}
+        Compare the following two math answers. Only respond "TRUE" if both answers are mathematically equivalent, otherwise return "FALSE"
+        Answer 1: {final_answer}
+        Answer 2: {correct_answer}) - 4.1 mini")
+Total correct: 3028 / 4754
+Accuracy: 63.69%
+
+
+
+
+
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/n/netscratch/dam_lab/Lab/hdiaz/.conda/envs/ssenv/lib/python3.12/site-packages/torch/nn/modules/linear.py", line 125, in forward
+    return F.linear(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 128.00 MiB. GPU 0 has a total capacity of 39.38 GiB of which 88.12 MiB is free. Including non-PyTorch memory, this process has 39.29 GiB memory in use. Of the allocated memory 38.05 GiB is allocated by PyTorch, and 745.79 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+
+
+06/11/2025 ===============(""<|system|>You are providing insightful explanations to grade school students.<|end|><|user|>First, break down this problem for grade school students. Then, clearly state the final numerical answer in a latex boxed environment which will be scored. \n\nProblem: {}\n<|end|><|assistant|>")
+
+
+("Given the question: {problem}
+        Compare the following two math answers. Only respond "TRUE" if both answers are mathematically equivalent, otherwise return "FALSE"
+        Answer 1: {final_answer}
+        Answer 2: {correct_answer}) - 4.1 mini")
+
+
+ISEQUIv: Total correct: 2942 / 4754
+Accuracy: 61.88%
+
+API: Total correct: 3057 / 4754
+Accuracy: 64.30%
+==================
