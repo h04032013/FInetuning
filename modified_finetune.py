@@ -32,7 +32,7 @@ def main():
     
     dataset_dict = load_dataset("open-web-math/open-web-math")
     full_dataset = dataset_dict["train"]
-    subset = full_dataset.shuffle(seed=42).select(range(int(0.05 * len(full_dataset))))
+    subset = full_dataset.shuffle(seed=42).select(range(1000))
     split = subset.train_test_split(test_size=0.2, seed=42)
     train_dataset = split["train"]
     test_dataset = split["test"]
@@ -63,23 +63,30 @@ def main():
                                       step=self.state.global_step)
             return loss
 
+    
     training_args = TrainingArguments(
         output_dir="./outputs",
-        evaluation_strategy="epoch",
+        eval_strategy="epoch",
         learning_rate=2e-5,
-        per_device_train_batch_size=4,
+        per_device_train_batch_size=4,           # 4 per GPU
         per_device_eval_batch_size=4,
+        gradient_accumulation_steps=2,           # accumulate over 2 steps
         num_train_epochs=2,
-        weight_decay=0.01,
+        lr_scheduler_type="cosine",
+        weight_decay=0.000001,
+        warmup_ratio=0.1,
         save_strategy="steps",
         save_steps=500,
         logging_dir="./logs",
         logging_steps=100,
         report_to="wandb",
         run_name="ft-opwmth",
+        fp16_full_eval=True,
         fp16=True,
         ddp_find_unused_parameters=False
     )
+
+    torch.cuda.set_device(local_rank)
 
     trainer = GradientSavingTrainer(
         model=model,
