@@ -96,7 +96,6 @@ training_args = TrainingArguments(
     num_train_epochs=2,
     weight_decay=0.01,
     save_strategy="steps",
-    warmup_ratio=0.1, 
     save_steps=500,
     logging_dir="./logs",
     logging_steps=100,

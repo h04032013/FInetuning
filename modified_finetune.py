@@ -68,8 +68,8 @@ def main():
         output_dir="./outputs",
         eval_strategy="epoch",
         learning_rate=2e-5,
-        per_device_train_batch_size=4,           # 4 per GPU
-        per_device_eval_batch_size=4,
+        per_device_train_batch_size=2,           # 4 per GPU
+        per_device_eval_batch_size=2,
         gradient_accumulation_steps=2,           # accumulate over 2 steps
         num_train_epochs=2,
         lr_scheduler_type="cosine",
@@ -82,7 +82,8 @@ def main():
         report_to="wandb",
         run_name="ft-opwmth",
         fp16_full_eval=True,
-        fp16=True,
+        fp16=False,
+        bf16=True,
         ddp_find_unused_parameters=False
     )
 
