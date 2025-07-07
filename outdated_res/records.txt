@@ -77,3 +77,7 @@ Accuracy: 64.30%
 ==================
 06/16
 NotImplementedError: Loading a dataset cached in a LocalFileSystem is not supported.
+
+
+==================
+RuntimeError: The server socket has failed to listen on any local network address. port: 35899, useIpv6: 0, code: -98, name: EADDRINUSE, message: address already in use

@@ -10,3 +10,4 @@ __pycache__
 hgf_new_hub
 wandb
 grads
+train_output

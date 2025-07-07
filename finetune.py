@@ -6,7 +6,8 @@ import os
 import wandb
 
 print("Imports done")
-model_name = "microsoft/Phi-4-mini-instruct"
+# model_name = "microsoft/Phi-4-mini-instruct"
+model_name = "Qwen/Qwen2.5-0.5B-Instruct"
 cache_str = "/n/netscratch/dam_lab/Lab/hdiaz/hgf_hub"
 ft_cache = "/n/netscratch/dam_lab/Lab/hdiaz/ft_project/hgf_new_hub"
 model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, cache_dir=cache_str)
@@ -29,7 +30,7 @@ full_dataset = dataset_dict["train"]
 #print("starting to slice")
 # only using 5% for prototyping code
 subset_size = int(0.05 * len(full_dataset))
-subset = full_dataset.shuffle(seed=42).select(range(subset_size))
+subset = full_dataset.shuffle(seed=42).select(range(1000))
 
 #print("splitting train set from subset")
 split = subset.train_test_split(test_size=0.2, seed=42)

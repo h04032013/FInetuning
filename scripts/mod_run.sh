@@ -27,11 +27,12 @@ nodes_array=($nodes)
 export MASTER_ADDR=${nodes_array[0]}
 export MASTER_PORT=$((10000 + RANDOM % 50000))
 # export MASTER_PORT=$(python -c "import socket; s = socket.socket(); s.bind(('', 0)); print(s.getsockname()[1]); s.close()")
-# export NODE_RANK=$SLURM_NODEID
+export NODE_RANK=$SLURM_NODEID
 
 # srun torchrun \
 #   --nproc_per_node=4 \
-#   --nnodes=1 \
+#   --nnodes=2 \
+#   --node_rank=$NODE_RANK \
 #   --master_addr=$MASTER_ADDR \
 #   --master_port=$MASTER_PORT \
 #   modified_finetune.py
@@ -39,6 +40,7 @@ export MASTER_PORT=$((10000 + RANDOM % 50000))
 torchrun \
   --nproc_per_node=4 \
   --nnodes=1 \
+  --node_rank=$NODE_RANK \
   --master_addr=$MASTER_ADDR \
   --master_port=$MASTER_PORT \
   modified_finetune.py

@@ -11,6 +11,8 @@ def main():
 
     # Setup environment (optional but helps)
     local_rank = int(os.environ.get("LOCAL_RANK", 0))
+
+    torch.cuda.set_device(local_rank)
     device = torch.device("cuda", local_rank)
     
     model_name = "microsoft/Phi-4-mini-instruct"
@@ -22,6 +24,8 @@ def main():
         torch_dtype=torch.float16,
         cache_dir=cache_str
     ).to(device)
+
+    model.to(device)
     
     # Only log to wandb on process rank 0
     if local_rank == 0:
@@ -87,7 +91,6 @@ def main():
         ddp_find_unused_parameters=False
     )
 
-    torch.cuda.set_device(local_rank)
 
     trainer = GradientSavingTrainer(
         model=model,
