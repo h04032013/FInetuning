@@ -23,7 +23,7 @@ def main():
         model_name,
         torch_dtype=torch.float16,
         cache_dir=cache_str
-    ).to(device)
+    )
 
     model.to(device)
     

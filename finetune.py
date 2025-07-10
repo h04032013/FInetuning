@@ -29,7 +29,7 @@ full_dataset = dataset_dict["train"]
 
 #print("starting to slice")
 # only using 5% for prototyping code
-subset_size = int(0.05 * len(full_dataset))
+#subset_size = int(0.05 * len(full_dataset))
 subset = full_dataset.shuffle(seed=42).select(range(1000))
 
 #print("splitting train set from subset")
@@ -61,13 +61,6 @@ tokenized_test_data = test_dataset.map(tokenize_function, batched=True)
 tokenized_train_data.set_format("torch")
 tokenized_test_data.set_format("torch")
 
-
-#print(next(iter(tokenized_test_data)))
-#print(next(iter(tokenized_test_data)))
-
-#print(tokenized_test_data.columns)
-#print(tokenized_train_data.columns)
-
 class GradientSavingTrainer(Trainer):
     def training_step(self, model, inputs, batch_size):
 
@@ -89,13 +82,13 @@ class GradientSavingTrainer(Trainer):
         return loss
     
 training_args = TrainingArguments(
-    #output_dir=cache_str,
+    output_dir=cache_str,
     eval_strategy="epoch",
     learning_rate = 2e-5,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     num_train_epochs=2,
-    weight_decay=0.01,
+    weight_decay=0.0000001,
     save_strategy="steps",
     save_steps=500,
     logging_dir="./logs",
