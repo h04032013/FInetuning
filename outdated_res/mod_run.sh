@@ -1,3 +1,5 @@
+
+#script srun for multi-node
 #!/bin/bash
 #SBATCH --job-name=h_train
 #SBATCH --account=kempner_dam_lab

@@ -1,3 +1,4 @@
+#training on 1 single gpu
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments, DataCollatorWithPadding, DataCollatorForLanguageModeling
 from datasets import load_dataset
