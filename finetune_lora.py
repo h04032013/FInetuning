@@ -1,6 +1,5 @@
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments, DataCollatorWithPadding, DataCollatorForLanguageModeling
-from datasets import load_dataset
 import tqdm
 import os 
 import wandb
@@ -16,12 +15,13 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 base_model.to(device)
 
 
-# wandb.init(entity= "hdiaz-harvard-university", project="training-opwmth")
-# wandb.watch(model) 
+wandb.init(entity= "hdiaz-harvard-university", project="training-opwmth")
+wandb.watch(base_model) 
 dataset_dict = load_dataset("open-web-math/open-web-math")
 full_dataset = dataset_dict["train"]
 subset = full_dataset.shuffle(seed=42).select(range(1000))
 
+split = subset.train_test_split(test_size=0.1, seed=42)
 train_dataset = split["train"]
 test_dataset = split["test"]
 

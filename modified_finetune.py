@@ -1,3 +1,4 @@
+#multi-node script 
 import torch
 import os
 import wandb

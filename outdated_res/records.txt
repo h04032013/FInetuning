@@ -81,3 +81,6 @@ NotImplementedError: Loading a dataset cached in a LocalFileSystem is not suppor
 
 ==================
 RuntimeError: The server socket has failed to listen on any local network address. port: 35899, useIpv6: 0, code: -98, name: EADDRINUSE, message: address already in use
+
+07/24===================
+ValueError: Target modules {'k_proj', 'out_proj', 'v_proj', 'q_proj'} not found in the base model. Please check the target modules and try again.
