@@ -1,0 +1,162 @@
+[
+    {
+     "problem": "What is the product of the squares of the solutions of $2x^2 + 13x + 6 = 0$?",
+     "level": "Level 4",
+     "type": "Algebra",
+     "solution": "By Vieta's formulas, the product of the solutions is $6/2 = 3,$ so the product of their squares is $3^2 = \\boxed{9}.$",
+     "answer": "9",
+     "unique_id": "test/algebra/1138.json"
+    },
+    {
+      "problem": "If $a = 8$, what is the value of $\\left(16\\sqrt[3]{a^2}\\right)^{\\frac 13}$?",
+      "level": "Level 1",
+      "type": "Algebra",
+      "solution": "Note that $a^2 = 64$ and $\\sqrt[3]{64} = 4$. Therefore, $$\\left(16\\sqrt[3]{a^2}\\right)^{\\frac {1}{3}} = \\left(16 \\times 4\\right)^{\\frac{1}{3}} = 64^\\frac{1}{3} = \\boxed{4}.$$",
+      "answer": "4",
+      "unique_id": "test/algebra/114.json"
+    },
+    {
+      "problem": "Find $x$ such that $\\lceil x \\rceil + x = \\dfrac{23}{7}$. Express $x$ as a common fraction.",
+      "level": "Level 4",
+      "type": "Algebra",
+      "solution": "First, we note that $x$ must be positive, since otherwise $\\lceil x \\rceil + x$ is nonpositive. Next, we know that the decimal part of $x$ must be $\\dfrac{2}{7}$. We write $x$ as $n+\\dfrac{2}{7}$, where $n$ is the greatest integer less than $x.$ Then, $\\lceil x \\rceil = n + 1.$ Therefore, we can write $\\lceil x \\rceil + x$ as $n+1+n+\\dfrac{2}{7}=\\dfrac{23}{7}$. Solving, we get $n=1$. Therefore, the only value $x$ that satisfies the equation is $1+\\dfrac{2}{7}=\\boxed{\\dfrac{9}{7}}$.",
+      "answer": "\\dfrac{9}{7}",
+      "unique_id": "test/algebra/1001.json"
+    },
+    {
+      "problem": "The sequence 2, 3, 5, 6, 7, 10, 11, $\\ldots$ contains all the positive integers from least to greatest that are neither squares nor cubes nor perfect fifth powers (in the form of $x^{5}$, where $x$ is an integer). What is the $1000^{\\mathrm{th}}$ term of the sequence?",
+      "level": "Level 5",
+      "type": "Counting & Probability",
+      "solution": "We see that it's easier to count the number of perfect squares, perfect cubes and perfect fifth powers less than $33^{2}=1089$. We see there are 32 perfect squares less than 1089, which are $1^2$, $2^2$, $\\ldots$, $32^2$ and then there are 10 perfect cubes which are $1^3$, $\\ldots$, $10^3$. There are 4 perfect fifth powers less than 1089 which are $1^5$, $\\ldots$, $4^5$. Then notice there are 3 numbers that are both perfect squares and perfect cubes which are 1, $2^{6} = 64$ and $3^{6} = 729$. There are also 2 numbers that are both perfect squares and perfect fifth powers which are $1^{10} = 1$ and $2^{10} = 1024$. The only number which is both a perfect cube and a perfect fifth power is $1^{15}=1$. The only number which is a perfect square, perfect cube, and perfect fifth power all at the same time is $1^{30}=1$. So within the first 1089 positive integers we need to get rid of $32+10+4-3-2-1+1 =41$ integers which means the $1000^{\\text{th}}$ term is $1000+41 = \\boxed{1041}$.",
+      "answer": "1041",
+      "unique_id": "test/counting_and_probability/1117.json"
+    },
+    {
+      "problem": "Determine the number of ways to arrange the letters of the word ELEVEN.",
+      "level": "Level 2",
+      "type": "Counting & Probability",
+      "solution": "There are three E's and six total letters, so the answer is $\\dfrac{6!}{3!} = \\boxed{120}$.",
+      "answer": "120",
+      "unique_id": "test/counting_and_probability/13.json"
+    },
+    {
+      "problem": "The probability of rain tomorrow is $\\frac{1}{11}$.  What is the probability that it will not rain tomorrow?  Express your answer as a common fraction.",
+      "level": "Level 1",
+      "type": "Counting & Probability",
+      "solution": "It must either rain tomorrow or not rain tomorrow, so the sum of the probability that it rains and the probability it doesn't rain is 1.  Therefore, the probability it doesn't rain is $1 - \\frac{1}{11} = \\boxed{\\frac{10}{11}}$.",
+      "answer": "\\frac{10}{11}",
+      "unique_id": "test/counting_and_probability/0.json"
+    },
+    {
+      "problem": "Two right triangles share a side as follows: [asy]\npair pA, pB, pC, pD, pE;\npA = (0, 0);\npB = pA + 4 * dir(0);\npC = pA + 5 * dir(90);\npD = pB + 4 * dir(90);\npE = (4 * pA + 5 * pD) / 9;\ndraw(pA--pB--pC--pA);\ndraw(pA--pB--pD--pA);\nlabel(\"$A$\", pA, SW);\nlabel(\"$B$\", pB, SE);\nlabel(\"$C$\", pC, NW);\nlabel(\"$D$\", pD, NE);\nlabel(\"$E$\", pE, 2 * N);\nlabel(\"$4$\", pA--pB, S);\nlabel(\"$5$\", pA--pC, W);\nlabel(\"$4$\", pB--pD, E);\ndraw(rightanglemark(pB,pA,pC,8));\ndraw(rightanglemark(pD,pB,pA,8));\n[/asy] What is the area of $\\triangle ABE$?",
+      "level": "Level 5",
+      "type": "Geometry",
+      "solution": "Since $AB = BD,$ we see that $\\triangle ABD$ is an isosceles right triangle, therefore $\\angle DAB = 45^\\circ.$ That means that $AD$, and consequently $AE,$ bisects $\\angle CAB.$\n\nRelating our areas to side lengths and applying the Angle Bisector Theorem, we have that: \\begin{align*}\n\\frac{[\\triangle AEC]}{[\\triangle ABE]} &= \\frac{CE}{EB} = \\frac{CA}{AB} \\\\\n\\frac{[\\triangle AEC]}{[\\triangle ABE]} + 1 &= \\frac{CA}{AB} + 1 \\\\\n\\frac{[\\triangle AEC] + [\\triangle ABE]}{[\\triangle ABE]} &= \\frac{CA + AB}{AB} \\\\\n\\frac{[\\triangle ABC]}{[\\triangle ABE]} &= \\frac{5 + 4}{4} = \\frac{9}{4}.\n\\end{align*} Now, we see that $[\\triangle ABC] = \\frac{1}{2} \\cdot 4 \\cdot 5 = 10,$ so $[\\triangle ABE] = \\frac{4}{9} \\cdot [\\triangle ABC] = \\frac{4}{9} \\cdot 10 = \\boxed{\\frac{40}{9}}.$",
+      "answer": "\\frac{40}{9}",
+      "unique_id": "test/geometry/100.json"
+    },
+    {
+      "problem": "In $\\triangle{ABC}$, shown, $\\cos{B}=\\frac{3}{5}$.  What is $\\cos{C}$?\n\n[asy]\ndraw((0,0)--(4,0)--(0,3)--cycle,black+linewidth(1));\ndraw(rightanglemark((4,0),(0,0),(0,3),10),black+linewidth(1));\nlabel(\"$A$\",(0,0),W);\nlabel(\"$B$\",(0,3),W);\nlabel(\"$C$\",(4,0),E);\nlabel(\"9\",(0,0)--(0,3),W);\n[/asy]",
+      "level": "Level 2",
+      "type": "Geometry",
+      "solution": "Since $\\cos{B}=\\frac{3}{5}$, we have $\\cos{B}=\\frac{AB}{BC}=\\frac{9}{BC}=\\frac{3}{5}$.  Then, we can see that we have $9=BC\\cdot\\frac{3}{5}$, so $BC=9\\cdot\\frac{5}{3}=15$.  From the Pythagorean Theorem, we have $AC=\\sqrt{BC^2-AB^2}=\\sqrt{15^2-9^2}=\\sqrt{144}=12$.  Finally, we can find $\\cos{C}$: $\\cos{C}=\\frac{AC}{BC}=\\frac{12}{15}=\\boxed{\\frac{4}{5}}$.",
+      "answer": "\\frac{4}{5}",
+      "unique_id": "test/geometry/10.json"
+    },
+    {
+      "problem": "We have triangle $\\triangle ABC$ where $AB = AC$ and $AD$ is an altitude. Meanwhile, $E$ is a point on $AC$ such that $AB \\parallel DE.$ If $BC = 12$  and the area of $\\triangle ABC$ is $180,$ what is the area of $ABDE$?",
+      "level": "Level 4",
+      "type": "Geometry",
+      "solution": "We first draw a diagram: [asy]\npair A, B, C, D, E;\nA = (0, 30);\nB = (-12, 0);\nC = (12, 0);\nD = 0.5 * B + 0.5 * C;\nE = 0.5 * A + 0.5 * C;\ndraw(A--B--C--cycle);\ndraw(A--D);\ndraw(D--E);\ndraw(D+(-1, 0)--D+(-1, 1)--D+(0, 1));\nlabel(\"$A$\", A, N);\nlabel(\"$B$\", B, SW);\nlabel(\"$C$\", C, SE);\nlabel(\"$D$\", D, S);\nlabel(\"$E$\", E, NE);\n[/asy] Since $\\triangle ABC$ is isosceles, $AD$ is a median as well as an altitude. We then see that $\\triangle DEC \\sim \\triangle BAC$ and since $D$ is the midpoint of $BC,$ the area of $\\triangle DEC$ is $\\frac{1}{4}$ of the area of $\\triangle ABC,$ or 45. The area of $ABDE$ is, therefore, $180 - 45 = \\boxed{135}.$",
+      "answer": "135",
+      "unique_id": "test/geometry/1002.json"
+    },
+    {
+      "problem": "Suppose that $x,$ $y,$ and $z$ are complex numbers such that \\[\\begin{aligned} xy &= -80 - 320i, \\\\ yz &=60, \\\\ zx &= -96 + 24i, \\end{aligned}\\]where $i^2 = -1.$ Compute $|x+y+z|.$",
+      "level": "Level 5",
+      "type": "Intermediate Algebra",
+      "solution": "Multiplying the given equations together, we have \\[\\begin{aligned} (xyz)^2& = (-80-320i) \\cdot 60 \\cdot (-96+24i) \\\\ &= -80(1+4i) \\cdot 60 \\cdot -24(4-i) \\\\ &= (80 \\cdot 60 \\cdot 24) (8 + 15i). \\end{aligned}\\]To solve for $xyz,$ we find a complex number $a+bi$ whose square is $8+15i$ (where $a$ and $b$ are real); that is, we want \\[(a+bi)^2 = (a^2-b^2) + 2abi = 8 + 15i.\\]Equating the real and imaginary parts, we get the equations $a^2-b^2=8$ and $2ab=15.$ Then $b = \\frac{15}{2a};$ substituting into the other equation gives $a^2 - \\frac{225}{4a^2} = 8,$ or $4a^4 - 32a^2 - 225 = 0.$ This factors as \\[(2a^2-25)(2a^2+9) = 0\\]so $2a^2-25=0$ (since $a$ is real), and $a = \\pm \\frac{5}{\\sqrt2}.$ Then $b = \\frac{15}{2a} = \\pm \\frac{3}{\\sqrt2}.$ Therefore, (arbitrarily) choosing both $a$ and $b$ positive, we have \\[(xyz)^2 = (80 \\cdot 60 \\cdot 24) \\left(\\frac{5}{\\sqrt2} + \\frac{3}{\\sqrt2}i \\right)^2,\\]and so \\[\\begin{aligned} xyz& = \\pm \\sqrt{80 \\cdot 60 \\cdot 24}\\left(\\frac{5}{\\sqrt2}+ \\frac{3}{\\sqrt2}i \\right) \\\\&= \\pm240\\sqrt{2} \\left(\\frac{5}{\\sqrt2} + \\frac{3}{\\sqrt2}i \\right) \\\\ &= \\pm240(5+3i). \\end{aligned}\\]Then \\[\\begin{aligned} x &= \\frac{xyz}{yz} =\\pm \\frac{ 240(5+3i)}{60} = \\pm (20 + 12i), \\\\ z &= \\frac{xyz}{xy} =\\pm \\frac{ 240(5+3i)}{-80(1+4i)} = {\\pm} \\frac{-3 (5+3i)(1-4i)}{17} =\\pm \\frac{ -3(17-17i)}{17} = \\pm( -3+3i), \\\\ y &= \\frac{xyz}{xz} = {\\pm}\\frac{ 240(5+3i)}{-24(4-i)} = \\pm \\frac{- 10 (5+3i)(4+i)}{17} = \\pm \\frac{ -10(17+17i)}{17} = \\pm(-10-10i). \\end{aligned}\\]Therefore, $x+y+z = \\pm(7 +5i),$ so $|x+y+z| = \\sqrt{7^2+5^2} = \\boxed{\\sqrt{74}}.$",
+      "answer": "\\sqrt{74}",
+      "unique_id": "test/intermediate_algebra/0.json"
+    },
+    {
+      "problem": "Is $f(x) = 3^x$ an even function, odd function, or neither?\n\nEnter \"odd\", \"even\", or \"neither\".",
+      "level": "Level 2",
+      "type": "Intermediate Algebra",
+      "solution": "Note that $f(1) = 3$ and $f(-1) = 3^{-1} = \\frac{1}{3}.$  Since $f(-1)$ is not equal to $f(1)$ or $-f(1),$ $f(x)$ is $\\boxed{\\text{neither}}$ even nor odd.",
+      "answer": "\\text{neither}",
+      "unique_id": "test/intermediate_algebra/10.json"
+    },
+    {
+      "problem": "The double factorial, denoted by $n!!$, returns the product of all of the odd integers that are less than or equal to $n$. For example, $7!! = 7 \\times 5 \\times 3 \\times 1$. What is the units digit of $1!! + 3!! + 5!! + 7!! + \\cdots + 49!!$?",
+      "level": "Level 5",
+      "type": "Number Theory",
+      "solution": "For any $n$, we note that $n!!$ is the product of a set of odd integers and is thus odd. For $n \\ge 5$, then $n!!$ is divisible by $5$. Thus, the units digit of $n!!$ must be $5$ for $n \\ge 5$. Hence, the units digit of the sum $5!! + 7!! + \\cdots + 49!!$ is units digit of the sum of $5$, $\\frac{49-5}{2} + 1 = 23$ times. The units digit of $23 \\times 5$ is also $5$. Now, we have to sum this with $3!! + 1!! = 3 \\times 1 + 1 = 4$, yielding that the answer is $4+5 = \\boxed{9}$.",
+      "answer": "9",
+      "unique_id": "test/number_theory/1044.json"
+    },
+    {
+      "problem": "Find the modulo 4 residue of $17 \\cdot 18$.",
+      "level": "Level 1",
+      "type": "Number Theory",
+      "solution": "$17 \\cdot 18 \\equiv 1 \\cdot 2 \\equiv \\boxed{2} \\pmod{4}$.",
+      "answer": "2",
+      "unique_id": "test/number_theory/101.json"
+    },
+    {
+      "problem": "Compute $817_9 - 145_9 - 266_9$.  Express your answer in base 9.",
+      "level": "Level 4",
+      "type": "Number Theory",
+      "solution": "$817_9 - 145_9 - 266_9 = 817_9 - (145_9 + 266_9) = 817_9 - 422_9 = \\boxed{385_9}$.",
+      "answer": "385_9",
+      "unique_id": "test/number_theory/692.json"
+    },
+    {
+      "problem": "What is the smallest multiple of $5$ which is greater than $-32$?",
+      "level": "Level 2",
+      "type": "Prealgebra",
+      "solution": "Dividing $-32$ by $5$ gives $-6$ with a remainder of $-2$, or $$-32 = -6 \\cdot 5 - 2.$$Thus, $-6 \\cdot 5 = \\boxed{-30}$ is the smallest multiple of $5$ that is greater than $-32$.",
+      "answer": "-30",
+      "unique_id": "test/prealgebra/1000.json"
+    },
+    {
+      "problem": "A housefly sits on the outer edge of a rotating circular ceiling fan with a diameter of 6 feet. The fan rotates constantly at a rate of 20 revolutions per minute. How many minutes had the housefly been on the fan during the time it took to travel $19{,}404\\pi$ feet? Express your answer to the nearest whole number.",
+      "level": "Level 5",
+      "type": "Prealgebra",
+      "solution": "A ceiling fan with a diameter of 6 feet has a circumference of $6\\pi$ feet. If the fly traveled $19{,}404\\pi$ feet, then it must have made $19{,}404\\pi \\div 6\\pi = 3234$ revolutions. Since the fan rotates 20 times per minute, that's $3234 \\div 20 = 161.7$ minutes, or about $\\boxed{162\\text{ minutes}}$, to the nearest whole number.",
+      "answer": "162\\text{ minutes}",
+      "unique_id": "test/prealgebra/1007.json"
+    },
+    {
+      "problem": "What is the least common multiple of the first ten positive integers?",
+      "level": "Level 4",
+      "type": "Prealgebra",
+      "solution": "Since $1$ divides every integer, we need only find the least common multiple (LCM) of the numbers $2$ through $10$.  Their prime factorizations are, respectively, $2, 3, 2^2, 5, 2\\cdot 3, 7, 2^3, 3^2, 2\\cdot 5$.   In its own prime factorization, the LCM must have each prime that appears in this list, raised to at minimum the highest power that appears in the list for that prime, in order for it to divide all of the integers from $2$ through $10$.  Thus, the prime factorization of the LCM is $2^3\\cdot 3^2 \\cdot 5\\cdot 7$. So the LCM is $8\\cdot 9\\cdot 5\\cdot 7 = \\boxed{2520}$.",
+      "answer": "2520",
+      "unique_id": "test/prealgebra/1002.json"
+    },
+    {
+      "problem": "If $\\frac{\\sin (2A + B)}{\\sin B} = 5,$ then find $\\frac{\\tan (A + B)}{\\tan A}.$",
+      "level": "Level 5",
+      "type": "Precalculus",
+      "solution": "From $\\frac{\\sin (2A + B)}{\\sin B} = 5,$\n\\[\\sin (2A + B) = 5 \\sin B.\\]We can write this as $\\sin (A + (A + B)) = 5 \\sin ((A + B) - A),$ so from the angle addition and subtraction formula,\n\\[\\sin A \\cos (A + B) + \\cos A \\sin (A + B) = 5 \\sin (A + B) \\cos A - 5 \\cos (A + B) \\sin A.\\]Then\n\\[6 \\sin A \\cos (A + B) = 4 \\sin (A + B) \\cos A,\\]so\n\\[\\frac{\\sin (A + B) \\cos A}{\\cos (A + B) \\sin A} = \\frac{3}{2}.\\]In other words,\n\\[\\frac{\\tan (A + B)}{\\tan A} = \\boxed{\\frac{3}{2}}.\\]",
+      "answer": "\\frac{3}{2}",
+      "unique_id": "test/precalculus/1067.json"
+    },
+    {
+      "problem": "Find the angle between the vectors $\\begin{pmatrix} 5 \\\\ -3 \\\\ -4 \\end{pmatrix}$ and $\\begin{pmatrix} 0 \\\\ -7 \\\\ -1 \\end{pmatrix},$ in degrees.",
+      "level": "Level 2",
+      "type": "Precalculus",
+      "solution": "If $\\theta$ is the angle between the vectors, then\n\\[\\cos \\theta = \\frac{\\begin{pmatrix} 5 \\\\ -3 \\\\ -4 \\end{pmatrix} \\cdot \\begin{pmatrix} 0 \\\\ -7 \\\\ -1 \\end{pmatrix}}{\\left\\| \\begin{pmatrix} 5 \\\\ -3 \\\\ -4 \\end{pmatrix} \\right\\| \\left\\| \\begin{pmatrix} 0 \\\\ -7 \\\\ -1 \\end{pmatrix} \\right\\|} = \\frac{(5)(0) + (-3)(-7) + (-4)(-1)}{\\sqrt{50} \\cdot \\sqrt{50}} = \\frac{25}{50} = \\frac{1}{2}.\\]Hence, $\\theta = \\boxed{60^\\circ}.$",
+      "answer": "60^\\circ",
+      "unique_id": "test/precalculus/1101.json"
+    },
+    {
+      "problem": "Let $S$ be the set of complex numbers $z$ such that the real part of $\\frac{1}{z}$ is equal to $\\frac{1}{6}.$  This set forms a curve.  Find the area of the region inside the curve.",
+      "level": "Level 3",
+      "type": "Precalculus",
+      "solution": "In general, the real part of a complex number $z$ is given by\n\\[\\frac{z + \\overline{z}}{2}.\\]Hence, the real part of $1/z$ is equal to 1/6 if and only if\n\\[\\frac{\\frac{1}{z} + \\frac{1}{\\overline{z}}}{2} = \\frac{1}{6},\\]or\n\\[\\frac{1}{z} + \\frac{1}{\\overline{z}} = \\frac{1}{3}.\\]Multiplying both sides by $3z \\overline{z}$, we get\n\\[3z + 3 \\overline{z} = z \\overline{z}.\\]We can re-write this equation as\n\\[z \\overline{z} - 3z - 3 \\overline{z} + 9 = 9.\\]The left-hand side factors as\n\\[(z - 3)(\\overline{z} - 3) = 9.\\]Since $\\overline{z} - 3$ is the conjugate of $z - 3$, this equation becomes\n\\[|z - 3|^2 = 9.\\][asy]\nunitsize(0.5 cm);\n\ndraw(Circle((3,0),3),red);\ndraw((-0.5,0)--(6.5,0));\ndraw((0,-3)--(0,3));\nfilldraw(Circle((0,0),0.1),white,red);\n\nlabel(\"Re\", (6.5,0), NE);\nlabel(\"Im\", (0,3), NE);\ndot(\"$3$\", (3,0), N);\n[/asy]\n\nHence, $S$ is the set of complex numbers that have a distance of 3 from the complex number 3 (except 0).  This is a circle of radius 3, so the area of the region inside is $\\boxed{9 \\pi}$.",
+      "answer": "9 \\pi",
+      "unique_id": "test/precalculus/1121.json"
+    }
+  ]

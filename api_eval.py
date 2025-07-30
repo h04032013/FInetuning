@@ -4,6 +4,8 @@ import asyncio
 from openai import AsyncOpenAI
 from tenacity import retry, stop_after_attempt, wait_fixed
 
+#Check black/white accuracy with llm
+
 API_KEY_PATH = "/n/netscratch/dam_lab/Lab/hdiaz/ft_project/openai_key"
 
 with open(API_KEY_PATH, 'r') as f:

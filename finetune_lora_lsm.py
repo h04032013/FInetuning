@@ -1,73 +1,104 @@
+#training for 1 gpu, using loss-masking logic due to phi input format
+
 from datasets import load_dataset
-from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments, DataCollatorWithPadding, DataCollatorForLanguageModeling
-import tqdm
+from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments, DataCollatorForLanguageModeling
 import os 
 import wandb
 from peft import LoraConfig, get_peft_model, TaskType
 import torch
 
-#paths
+# Paths
 model_name = "microsoft/Phi-4-mini-instruct"
 cache_str = "/n/netscratch/dam_lab/Lab/hdiaz/hgf_hub"
 ft_cache = "/n/netscratch/dam_lab/Lab/hdiaz/ft_project/hgf_new_hub/phi4"
+os.makedirs("./grads", exist_ok=True)
 
-#calling model + cuda
-base_model = AutoModelForCausalLM.from_pretrained(model_name, 
-                                                  torch_dtype=torch.float16, 
-                                                  cache_dir=cache_str)
+# Load model
+base_model = AutoModelForCausalLM.from_pretrained(
+    model_name, torch_dtype=torch.float16, cache_dir=cache_str
+)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 base_model.to(device)
 
-#wandb
-wandb.init(entity= "hdiaz-harvard-university", project="training-opwmth")
-wandb.watch(base_model) 
+# W&B
+wandb.init(entity="hdiaz-harvard-university", project="training-opwmth")
+wandb.watch(base_model)
 
-#loading data
+# Load dataset
 dataset_dict = load_dataset("open-web-math/open-web-math")
 full_dataset = dataset_dict["train"]
 subset = full_dataset.shuffle(seed=42).select(range(1000))
-
 split = subset.train_test_split(test_size=0.1, seed=42)
 train_dataset = split["train"]
 test_dataset = split["test"]
 
-# Check results of loaded data
 print(f"Subset size: {len(subset)}")
 print(f"Train size: {len(train_dataset)}")
 print(f"Test size: {len(test_dataset)}")
 
-tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=cache_str,)
+# Tokenizer
+tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=cache_str)
 tokenizer.pad_token = tokenizer.eos_token
 data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 
-def tokenize_function(examples):
-#calll that pre-trained tokenizer
-    return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=512)
+# Loss-masked tokenizer
+def tokenize_with_loss_mask(example):
+    full_text = example["text"]
+    assistant_tag = "<|assistant|>"
 
-tokenized_train_data = train_dataset.map(tokenize_function, batched=True)
-tokenized_test_data = test_dataset.map(tokenize_function, batched=True)
+    # Tokenize the full input
+    tokenized = tokenizer(
+        full_text,
+        padding="max_length",
+        truncation=True,
+        max_length=512,
+        return_tensors="pt"
+    )
+    
+    input_ids = tokenized["input_ids"][0]
+    labels = input_ids.clone()
 
+    # Find index right after <|assistant|>
+    assistant_token_ids = tokenizer(assistant_tag, add_special_tokens=False)["input_ids"]
+    match_idx = 0
+    for i in range(len(input_ids) - len(assistant_token_ids)):
+        if input_ids[i:i+len(assistant_token_ids)].tolist() == assistant_token_ids:
+            match_idx = i + len(assistant_token_ids)
+            break
+
+    labels[:match_idx] = -100  # Mask everything before assistant response
+
+    return {
+        "input_ids": input_ids,
+        "labels": labels,
+        "attention_mask": tokenized["attention_mask"][0]
+    }
+
+# Tokenize datasets with loss masking
+tokenized_train_data = train_dataset.map(tokenize_with_loss_mask)
+tokenized_test_data = test_dataset.map(tokenize_with_loss_mask)
+tokenized_train_data.set_format(type="torch")
+tokenized_test_data.set_format(type="torch")
+
+# Apply LoRA
 lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
-    target_modules=["qkv_proj", "o_proj"],  # adjust for Phi architecture
+    target_modules=["qkv_proj", "o_proj"],
     lora_dropout=0.001,
     bias="none",
     task_type=TaskType.CAUSAL_LM,
 )
 
 model = get_peft_model(base_model, lora_config)
-model.train()  # set training mode
-model.gradient_checkpointing_enable()  # optional memory efficiency
+model.train()
+model.gradient_checkpointing_enable()
 
+# Custom Trainer for gradient logging
 class GradientSavingTrainer(Trainer):
     def training_step(self, model, inputs, batch_size):
-
-#Standard training step
         loss = super().training_step(model, inputs, batch_size)
-
-        # Save gradients if needed
-        if self.state.global_step % 500 == 0:  # every 500 steps
+        if self.state.global_step % 500 == 0:
             save_path = f"./grads/step_{self.state.global_step}"
             os.makedirs(save_path, exist_ok=True)
             for name, param in model.named_parameters():
@@ -76,19 +107,17 @@ class GradientSavingTrainer(Trainer):
                     if wandb.run is not None:
                         wandb.log({f"gradients/{name}": wandb.Histogram(param.grad.cpu().data.numpy())},
                                   step=self.state.global_step)
-
-
         return loss
 
+# Training arguments
 training_args = TrainingArguments(
     output_dir=cache_str,
-    eval_strategy="epoch",
-    learning_rate = 2e-5,
+    evaluation_strategy="epoch",
+    learning_rate=2e-5,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
-    #just 1 epoch for quick debugging
     num_train_epochs=1,
-    weight_decay=0.000001,
+    weight_decay=1e-6,
     save_strategy="steps",
     save_steps=500,
     logging_dir="./logs",
@@ -96,8 +125,9 @@ training_args = TrainingArguments(
     push_to_hub=False,
     report_to="wandb",
     run_name="ft-opwmth"
-    )
+)
 
+# Initialize trainer
 trainer = GradientSavingTrainer(
     model=model,
     args=training_args,
@@ -107,7 +137,7 @@ trainer = GradientSavingTrainer(
     data_collator=data_collator,
 )
 
-
+# Train and save
 trainer.train()
 model.save_pretrained(ft_cache)
 tokenizer.save_pretrained(ft_cache)

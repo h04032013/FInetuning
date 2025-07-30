@@ -13,6 +13,8 @@ import time
 import os
 from tenacity import retry, stop_after_attempt, wait_fixed
 
+#Check is_equiv with hendrycks script, grade with gpt api
+
 #helper functions
 def load_json(filepath):
     with open(filepath, "r") as f:
