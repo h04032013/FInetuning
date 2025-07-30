@@ -25,4 +25,4 @@ module load cuda cudnn
 mamba activate env4
 
 # Run training
-python get_peft_names.py
+python finetune_lora_lsm.py

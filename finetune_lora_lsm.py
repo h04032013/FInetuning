@@ -1,7 +1,8 @@
 #training for 1 gpu, using loss-masking logic due to phi input format
 
 from datasets import load_dataset
-from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments, DataCollatorForLanguageModeling
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, DataCollatorForLanguageModeling
+from transformers import Trainer as HFTrainer
 import os 
 import wandb
 from peft import LoraConfig, get_peft_model, TaskType
@@ -51,7 +52,7 @@ def tokenize_with_loss_mask(example):
         full_text,
         padding="max_length",
         truncation=True,
-        max_length=512,
+        max_length=1024,
         return_tensors="pt"
     )
     
@@ -95,7 +96,7 @@ model.train()
 model.gradient_checkpointing_enable()
 
 # Custom Trainer for gradient logging
-class GradientSavingTrainer(Trainer):
+class GradientSavingTrainer(HFTrainer):
     def training_step(self, model, inputs, batch_size):
         loss = super().training_step(model, inputs, batch_size)
         if self.state.global_step % 500 == 0:
