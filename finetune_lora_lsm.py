@@ -1,5 +1,5 @@
 #training for 1 gpu, using loss-masking logic due to phi input format
-
+import transformers
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, DataCollatorForLanguageModeling
 from transformers import Trainer as HFTrainer
@@ -8,20 +8,20 @@ import wandb
 from peft import LoraConfig, get_peft_model, TaskType
 import torch
 
-# Paths
+
 model_name = "microsoft/Phi-4-mini-instruct"
 cache_str = "/n/netscratch/dam_lab/Lab/hdiaz/hgf_hub"
 ft_cache = "/n/netscratch/dam_lab/Lab/hdiaz/ft_project/hgf_new_hub/phi4"
 os.makedirs("./grads", exist_ok=True)
 
-# Load model
+
 base_model = AutoModelForCausalLM.from_pretrained(
     model_name, torch_dtype=torch.float16, cache_dir=cache_str
 )
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 base_model.to(device)
 
-# W&B
+#  wandb
 wandb.init(entity="hdiaz-harvard-university", project="training-opwmth")
 wandb.watch(base_model)
 
@@ -91,13 +91,15 @@ lora_config = LoraConfig(
     task_type=TaskType.CAUSAL_LM,
 )
 
+base_model.config.use_cache = False
+
 model = get_peft_model(base_model, lora_config)
 model.train()
 model.gradient_checkpointing_enable()
 
 # Custom Trainer for gradient logging
 class GradientSavingTrainer(HFTrainer):
-    def training_step(self, model, inputs, batch_size):
+    def training_step(self, model, inputs, batch_size): 
         loss = super().training_step(model, inputs, batch_size)
         if self.state.global_step % 500 == 0:
             save_path = f"./grads/step_{self.state.global_step}"
@@ -106,14 +108,20 @@ class GradientSavingTrainer(HFTrainer):
                 if param.requires_grad and param.grad is not None:
                     torch.save(param.grad.clone().cpu(), f"{save_path}/{name.replace('.', '_')}_grad.pt")
                     if wandb.run is not None:
-                        wandb.log({f"gradients/{name}": wandb.Histogram(param.grad.cpu().data.numpy())},
-                                  step=self.state.global_step)
+                        wandb.log(
+                            {f"gradients/{name}": wandb.Histogram(param.grad.cpu().data.numpy())},
+                            step=self.state.global_step
+                        )
         return loss
+
+
+#print("Transformers version:", transformers.__version__)
+#print("TrainingArguments source:", TrainingArguments.__module__)
 
 # Training arguments
 training_args = TrainingArguments(
     output_dir=cache_str,
-    evaluation_strategy="epoch",
+    eval_strategy="epoch",
     learning_rate=2e-5,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,

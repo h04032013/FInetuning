@@ -22,7 +22,7 @@ module load Mambaforge
 module load cuda cudnn
 
 # Activate conda environment (optional)
-mamba activate env4
+mamba activate env6
 
 # Run training
 python finetune_lora_lsm.py
