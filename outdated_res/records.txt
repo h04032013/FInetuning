@@ -85,4 +85,18 @@ RuntimeError: The server socket has failed to listen on any local network addres
 07/24===================
 ValueError: Target modules {'k_proj', 'out_proj', 'v_proj', 'q_proj'} not found in the base model. Please check the target modules and try again.
 
+07/31==============================
+/n/netscratch/dam_lab/Lab/hdiaz/ft_project/finetune_lora_lsm.py:140: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `GradientSavingTrainer.__init__`. Use `processing_class` instead.
+  trainer = GradientSavingTrainer(
+Detected kernel version 4.18.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
 
+  0%|          | 0/113 [00:00<?, ?it/s]/n/netscratch/dam_lab/Lab/hdiaz/.conda/envs/env6/lib/python3.12/site-packages/torch/utils/checkpoint.py:87: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+
+
+
+07/31====================================
+Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: element 0 of tensors does not require grad and does not have a grad_fn

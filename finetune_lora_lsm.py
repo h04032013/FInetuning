@@ -97,10 +97,37 @@ model = get_peft_model(base_model, lora_config)
 model.train()
 model.gradient_checkpointing_enable()
 
+for name, param in model.named_parameters():
+    if param.requires_grad:
+        print(f"Trainable: {name}")
+
+
+#HAVENT TRIED THIS YET
+# for name, param in model.named_parameters():
+#     if param.requires_grad:
+#         break
+# else:
+#     raise RuntimeError("No parameters with requires_grad=True. Model won't train.")
+
+
 # Custom Trainer for gradient logging
 class GradientSavingTrainer(HFTrainer):
     def training_step(self, model, inputs, batch_size): 
-        loss = super().training_step(model, inputs, batch_size)
+        model.train()
+        inputs = self._prepare_inputs(inputs)
+
+        # Forward pass with loss
+        outputs = model(**inputs)
+        loss = outputs.loss
+
+        # Make sure loss has grad_fn
+        if not loss.requires_grad:
+            raise RuntimeError("Loss does not require grad — check model setup.")
+
+        # Backward pass
+        loss.backward()
+
+        # Gradient logging every 500 steps
         if self.state.global_step % 500 == 0:
             save_path = f"./grads/step_{self.state.global_step}"
             os.makedirs(save_path, exist_ok=True)
@@ -112,7 +139,9 @@ class GradientSavingTrainer(HFTrainer):
                             {f"gradients/{name}": wandb.Histogram(param.grad.cpu().data.numpy())},
                             step=self.state.global_step
                         )
-        return loss
+
+        return loss.detach()
+
 
 
 #print("Transformers version:", transformers.__version__)
@@ -146,7 +175,8 @@ trainer = GradientSavingTrainer(
     data_collator=data_collator,
 )
 
-# Train and save
-trainer.train()
-model.save_pretrained(ft_cache)
-tokenizer.save_pretrained(ft_cache)
+#Train and save
+# trainer.train()
+# model.save_pretrained(ft_cache)
+# tokenizer.save_pretrained(ft_cache)
+
