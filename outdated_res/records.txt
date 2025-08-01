@@ -100,3 +100,11 @@ No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel
 Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 RuntimeError: element 0 of tensors does not require grad and does not have a grad_fn
+
+08/01=================================================
+
+  File "/n/netscratch/dam_lab/Lab/hdiaz/ft_project/finetune_lora_lsm.py", line 120, in training_step
+    outputs = model(**inputs)
+        ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Loss does not require grad — check model setup.
+
