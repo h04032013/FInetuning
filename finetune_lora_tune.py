@@ -42,7 +42,7 @@ data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 
 def tokenize_function(examples):
 #calll that pre-trained tokenizer
-    return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=1024)
+    return tokenizer(examples["text"], padding="max_length", truncation=True, max_length=512)
 
 tokenized_train_data = train_dataset.map(tokenize_function, batched=True)
 tokenized_test_data = test_dataset.map(tokenize_function, batched=True)
@@ -72,10 +72,10 @@ class GradientSavingTrainer(Trainer):
             os.makedirs(save_path, exist_ok=True)
             for name, param in model.named_parameters():
                 if param.requires_grad and param.grad is not None:
-                    grad = param.grad.detach().cpu() #added 08/05/2025
                     torch.save(param.grad.clone().cpu(), f"{save_path}/{name.replace('.', '_')}_grad.pt")
                     if wandb.run is not None:
-                        wandb.log({f"gradients/{name}": wandb.Histogram(param.grad.cpu().data.numpy())}, step=self.state.global_step)
+                        wandb.log({f"gradients/{name}": wandb.Histogram(param.grad.cpu().data.numpy())},
+                                  step=self.state.global_step)
 
 
         return loss

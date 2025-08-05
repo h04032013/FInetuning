@@ -25,4 +25,4 @@ module load cuda cudnn
 mamba activate env6
 
 # Run training
-python finetune_lora_lsm.py
+python finetune_lora_tune.py
