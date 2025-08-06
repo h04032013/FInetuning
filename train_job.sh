@@ -6,7 +6,7 @@
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=8
 #SBATCH --gpus-per-node=1
-#SBATCH --time=0-16:00:00
+#SBATCH --time=0-24:00:00
 #SBATCH --mem=128G
 #SBATCH --output=train_output.out
 #SBATCH --error=train_error.err
@@ -25,4 +25,4 @@ module load cuda cudnn
 mamba activate env6
 
 # Run training
-python finetune_lora_tune.py
+python finetune_lora.py
