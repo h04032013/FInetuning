@@ -108,3 +108,35 @@ RuntimeError: element 0 of tensors does not require grad and does not have a gra
         ^^^^^^^^^^^^^^^^^^^^^^
 RuntimeError: Loss does not require grad — check model setup.
 
+08/05=================================
+FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `GradientSavingTrainer.__init__`. Use `processing_class` instead.
+  trainer = GradientSavingTrainer(
+Detected kernel version 4.18.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+
+  0%|          | 0/57 [00:00<?, ?it/s]`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+slurmstepd: error: *** JOB 28939490 ON holygpu8a19106 CANCELLED AT 2025-08-06T22:49:15 ***
+
+======================================08/11 fsdp sh and ft
+
+ 94%|█████████▍| 47/50 [00:05<00:00,  7.83it/s][A
+
+ 96%|█████████▌| 48/50 [00:05<00:00,  7.90it/s][A
+
+ 98%|█████████▊| 49/50 [00:05<00:00,  7.94it/s][A
+
+100%|██████████| 50/50 [00:06<00:00,  6.62it/s][A
+                                             
+
+                                               
+[A
+100%|██████████| 7/7 [01:40<00:00,  9.87s/it]
+
+100%|██████████| 50/50 [00:06<00:00,  6.62it/s][A
+
+                                               [A
+                                             
+
+100%|██████████| 7/7 [01:40<00:00,  9.87s/it]
+100%|██████████| 7/7 [01:40<00:00, 14.31s/it]
+

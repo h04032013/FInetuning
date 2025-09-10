@@ -1,0 +1,76 @@
+# config.yaml for TorchTune
+# Save this as config.yaml and run with: tune run lora_finetune_single_device --config config.yaml
+
+# Model
+model:
+  _component_: torchtune.models.phi3.phi3_mini
+  
+# Tokenizer
+tokenizer:
+  _component_: torchtune.models.phi3.phi3_tokenizer
+  path: microsoft/Phi-4-mini-instruct
+
+# Checkpointer
+checkpointer:
+  _component_: torchtune.training.FullModelHFCheckpointer
+  checkpoint_dir: microsoft/Phi-4-mini-instruct
+  checkpoint_files: [pytorch_model.bin]
+  recipe_checkpoint: null
+  output_dir: /n/netscratch/dam_lab/Lab/hdiaz/ft_project/hgf_new_hub
+  model_type: PHI3_MINI
+
+# Dataset and Sampler
+dataset:
+  _component_: torchtune.datasets.text_completion_dataset
+  source: open-web-math/open-web-math
+  max_seq_len: 1024
+  split: train
+
+seed: 42
+shuffle: True
+
+# Fine-tuning
+epochs: 1
+max_steps_per_epoch: null
+batch_size: 4
+gradient_accumulation_steps: 1
+
+optimizer:
+  _component_: torch.optim.AdamW
+  lr: 2e-5
+  weight_decay: 1e-6
+
+lr_scheduler:
+  _component_: torchtune.training.lr_schedulers.cosine_annealing_lr
+  T_max: 1000  # Adjust based on your dataset size
+
+loss:
+  _component_: torch.nn.CrossEntropyLoss
+
+# LoRA configuration
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.001
+apply_lora_to_mlp: False
+apply_lora_to_output: True
+
+# Training
+compile: False
+device: cuda
+dtype: bf16
+enable_activation_checkpointing: True
+
+# Logging
+output_dir: /n/netscratch/dam_lab/Lab/hdiaz/ft_project/hgf_new_hub
+metric_logger:
+  _component_: torchtune.training.metric_logging.WandBLogger
+  project: training-opwmth
+  entity: hdiaz-harvard-university
+
+log_every_n_steps: 100
+log_peak_memory_stats: False
+
+# Profiler (optional)
+profiler:
+  _component_: torchtune.training.setup_torch_profiler
+  enabled: False

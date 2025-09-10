@@ -1,0 +1,34 @@
+# configs/phi-4-mini/lora.yaml
+tokenizer:
+  name: microsoft/Phi-4-mini-instruct
+
+dataset:
+  path: open-web-math/open-web-math
+  split: train
+  num_samples: 1000
+  max_length: 1024
+  train_val_split: 0.8
+  shuffle: true
+
+lora:
+  target_modules: ["qkv_proj", "o_proj"]
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.001
+  bias: "none"
+
+trainer:
+  learning_rate: 2e-5
+  num_train_epochs: 1
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  weight_decay: 1e-6
+  eval_strategy: "epoch"
+  save_strategy: "steps"
+  save_steps: 500
+  logging_steps: 100
+  log_to_wandb: true
+  wandb_project: "training-opwmth"
+  wandb_entity: "hdiaz-harvard-university"
+  run_name: "phi4-lora-opwmth"
+  output_dir: /n/netscratch/dam_lab/Lab/hdiaz/ft_project/hgf_new_hub

@@ -1,9 +1,0 @@
-[W707 15:23:56.729389466 socket.cpp:759] [c10d] The client socket cannot be initialized to connect to [holygpu8a19404.rc.fas.harvard.edu]:42727 (errno: 97 - Address family not supported by protocol).
-[W707 15:23:56.046363224 socket.cpp:759] [c10d] The client socket cannot be initialized to connect to [holygpu8a19404.rc.fas.harvard.edu]:42727 (errno: 97 - Address family not supported by protocol).
-srun: got SIGCONT
-slurmstepd: error: *** STEP 23314537.0 ON holygpu8a19404 CANCELLED AT 2025-07-07T15:29:16 ***
-srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
-slurmstepd: error: *** JOB 23314537 ON holygpu8a19404 CANCELLED AT 2025-07-07T15:29:16 ***
-srun: forcing job termination
-srun: error: holygpu8a19405: task 1: Terminated
-srun: error: holygpu8a19404: task 0: Terminated
