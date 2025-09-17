@@ -1,8 +1,10 @@
 openai_key
 train_error.err 
 train_output.out 
+gen_error.err
+gen_output.out
 __pycache__
 hgf_new_hub
-wandb
+wandb/
 grads
 trainer_output

@@ -31,14 +31,15 @@ def extract_boxed_content(latex_str):
             i += 1
     return final_answer[0] if final_answer else None
 
-def generate_response (model_name, input_path, output_path, batch_size, cache_str):
+def generate_response (model_name, input_path, output_path, batch_size):
     
     with open(input_path, "r") as f:
         problems = json.load(f)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    base_model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_str,trust_remote_code=True)
-    tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=cache_str, padding_side='left',trust_remote_code=True)
+    base_model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=False)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, padding_side='left',trust_remote_code=False)
+    tokenizer.pad_token = tokenizer.eos_token
     base_model.to(device)
     base_model.eval()
 
